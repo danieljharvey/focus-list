@@ -78,37 +78,36 @@ const newerIndex = focusList
 console.log(newerIndex);
 // 0
 
-/*
+const anArray = focusList.toArray();
+console.log(anArray);
+// [{name: "Bruce", age: 100}, {name: "Horse", age: 20}]
 
+const firstOne = focusList.get();
+console.log(firstOne);
+// {name: "Bruce", age: 100}
 
-  toArray(): A[] {
-    return this.filter(_ => true);
-  }
+const secondOne = focusList.next().get();
+console.log(secondOne);
+// {name: "Horse", age: 20}
 
-  get(): A {
-    return this._current;
-  }
+const mappedCurrent = focusList
+  .mapCurrent(person => ({ ...person, age: person.age + 1 }))
+  .toArray();
+console.log(mappedCurrent);
+// [{name: "Bruce", age: 101}, {name: "Horse", age: 20}]
 
-  mapCurrent(func: (a: A) => A): FocusList<A> {
-    return new FocusList(this._before, func(this._current), this._after);
-  }
+const totalAge = focusList.fold(0, (total, person) => {
+  return total + person.age;
+});
+console.log(totalAge);
+// 120
 
-  fold<B>(def: B, func: (b: B, a: A) => B): B {
-    return this.toArray().reduce(func, def);
-  }
+const newFocusedItem = focusList.focusToIndex(1).get();
+console.log(newFocusedItem);
+// {name: "Horse", age: 20}
 
-  focusToIndex(index: number): FocusList<A> {
-    if (index < 0 || index >= this.length()) {
-      return this.id();
-    }
-    const array = this.toArray();
-    const newBefore = array.slice(0, index);
-    const newCurrent = array.slice(index)[0];
-    const newAfter = array.slice(index + 1);
-    return new FocusList(newBefore, newCurrent, newAfter);
-  }
-
-  focusWithFind(pred: (a: A) => boolean): FocusList<A> {
-    return this.focusToIndex(this.findIndex(pred));
-  }
-*/
+const foundFocusedItem = focusList
+  .focusWithFind(person => person.name === "Bruce")
+  .get();
+console.log(foundFocusedItem);
+// {name: "Bruce", age: 101}

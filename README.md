@@ -80,4 +80,38 @@ const newerIndex = focusList
   .index();
 console.log(newerIndex);
 // 0
+
+const anArray = focusList.toArray();
+console.log(anArray);
+// [{name: "Bruce", age: 100}, {name: "Horse", age: 20}]
+
+const firstOne = focusList.get();
+console.log(firstOne);
+// {name: "Bruce", age: 100}
+
+const secondOne = focusList.next().get();
+console.log(secondOne);
+// {name: "Horse", age: 20}
+
+const mappedCurrent = focusList
+  .mapCurrent(person => ({ ...person, age: person.age + 1 }))
+  .toArray();
+console.log(mappedCurrent);
+// [{name: "Bruce", age: 101}, {name: "Horse", age: 20}]
+
+const totalAge = focusList.fold(0, (total, person) => {
+  return total + person.age;
+});
+console.log(totalAge);
+// 120
+
+const newFocusedItem = focusList.focusToIndex(1).get();
+console.log(newFocusedItem);
+// {name: "Horse", age: 20}
+
+const foundFocusedItem = focusList
+  .focusWithFind(person => person.name === "Bruce")
+  .get();
+console.log(foundFocusedItem);
+// {name: "Bruce", age: 101}
 ```
